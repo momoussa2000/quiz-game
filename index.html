@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizBattle - Multiplayer Quiz Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="countdown.css">
+</head>
+<body>
+    <div class="countdown-overlay">
+        <div class="countdown-number">3</div>
+        <div class="player-name-display"></div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1 class="pixel-font">QuizBattle</h1>
+            <p>Test your knowledge and speed!</p>
+        </header>
+        
+        <div id="game-setup" class="section">
+            <h2>Game Setup</h2>
+            <div class="player-setup">
+                <div class="player">
+                    <label for="player1-name">Player 1 Name:</label>
+                    <input type="text" id="player1-name" placeholder="Enter name">
+                </div>
+                <div class="player">
+                    <label for="player2-name">Player 2 Name:</label>
+                    <input type="text" id="player2-name" placeholder="Enter name">
+                </div>
+            </div>
+            
+            <div class="category-selection">
+                <h3>Select Category:</h3>
+                <select id="category-select">
+                    <option value="general">General Knowledge</option>
+                    <option value="science">Science</option>
+                    <option value="history">History</option>
+                    <option value="geography">Geography</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="sports">Sports</option>
+                    <option value="art">Art</option>
+                    <option value="technology">Technology</option>
+                </select>
+            </div>
+            
+            <div class="token-selection">
+                <h3>Select Token Bout:</h3>
+                <div class="token-options">
+                    <button class="token-btn" data-value="5">5 Tokens</button>
+                    <button class="token-btn" data-value="10">10 Tokens</button>
+                    <button class="token-btn" data-value="50">50 Tokens</button>
+                    <button class="token-btn" data-value="100">100 Tokens</button>
+                </div>
+            </div>
+            
+            <button id="start-game-btn" class="primary-btn">Start Game</button>
+        </div>
+        
+        <div id="game-area" class="section hidden">
+            <div class="game-info">
+                <div class="player-info" id="player1-info">
+                    <h3 id="player1-display-name">Player 1</h3>
+                    <p>Score: <span id="player1-score">0</span></p>
+                    <p>Tokens: <span id="player1-tokens">100</span></p>
+                </div>
+                
+                <div class="game-status">
+                    <div id="timer">10</div>
+                    <div id="round-info">Round <span id="current-round">1</span>/5</div>
+                    <div id="speed-indicator" class="speed-indicator">
+                        <div id="speed-1" class="speed-bar"></div>
+                        <div id="speed-2" class="speed-bar"></div>
+                        <div id="speed-3" class="speed-bar"></div>
+                        <div id="speed-4" class="speed-bar"></div>
+                        <div id="speed-5" class="speed-bar"></div>
+                    </div>
+                    <div id="speed-bonus" class="speed-bonus">Speed Bonus: <span>0</span></div>
+                </div>
+                
+                <div class="player-info" id="player2-info">
+                    <h3 id="player2-display-name">Player 2</h3>
+                    <p>Score: <span id="player2-score">0</span></p>
+                    <p>Tokens: <span id="player2-tokens">100</span></p>
+                </div>
+            </div>
+            
+            <div class="question-area">
+                <h2 id="question-text">Question will appear here</h2>
+                
+                <div class="answers-grid">
+                    <button class="answer-btn" id="answer-0"><span class="key-hint">1</span>Answer 1</button>
+                    <button class="answer-btn" id="answer-1"><span class="key-hint">2</span>Answer 2</button>
+                    <button class="answer-btn" id="answer-2"><span class="key-hint">3</span>Answer 3</button>
+                    <button class="answer-btn" id="answer-3"><span class="key-hint">4</span>Answer 4</button>
+                </div>
+                <div class="keyboard-hint">
+                    <p>Press number keys 1-4 to select answers quickly!</p>
+                </div>
+            </div>
+            
+            <div class="turn-indicator">
+                <div id="player1-turn" class="turn-marker active">Player 1's Turn</div>
+                <div id="player2-turn" class="turn-marker">Player 2's Turn</div>
+            </div>
+        </div>
+        
+        <div id="game-results" class="section hidden">
+            <h2>Game Results</h2>
+            <div class="results-container">
+                <div class="winner-announcement">
+                    <h3 id="winner-text">Player 1 Wins!</h3>
+                </div>
+                
+                <div class="final-scores">
+                    <div class="player-result">
+                        <h4 id="result-player1-name">Player 1</h4>
+                        <p>Score: <span id="result-player1-score">0</span></p>
+                        <p>Tokens: <span id="result-player1-tokens">0</span></p>
+                    </div>
+                    
+                    <div class="player-result">
+                        <h4 id="result-player2-name">Player 2</h4>
+                        <p>Score: <span id="result-player2-score">0</span></p>
+                        <p>Tokens: <span id="result-player2-tokens">0</span></p>
+                    </div>
+                </div>
+                
+                <div class="score-breakdown-container">
+                    <h3>Score Breakdown by Round</h3>
+                    <div id="score-breakdown" class="breakdown-table">
+                        <!-- Score breakdown will be populated here -->
+                    </div>
+                </div>
+            </div>
+            
+            <button id="play-again-btn" class="primary-btn">Play Again</button>
+        </div>
+    </div>
+    
+    <script src="questions.js"></script>
+    <script src="expanded_questions.js"></script>
+    <script src="additional_sports_questions.js"></script>
+    <script src="additional_general_questions.js"></script>
+    <script src="additional_science_questions.js"></script>
+    <script src="additional_history_questions.js"></script>
+    <script src="additional_geography_questions.js"></script>
+    <script src="additional_entertainment_questions.js"></script>
+    <script src="merge_questions.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
