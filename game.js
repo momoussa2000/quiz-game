@@ -16,6 +16,7 @@ let timeLeft = 10; // seconds per question
 let gameActive = false;
 let questionsPerStreak = 3; // Number of questions each player answers in a row
 let askedQuestions = {}; // Track asked questions to prevent repetition across the entire game
+let answerProcessing = false;
 
 // DOM Elements
 const gameSetupSection = document.getElementById('game-setup');
@@ -63,8 +64,8 @@ document.addEventListener('keydown', handleKeyboardInput);
 
 // Handle keyboard shortcuts for answer selection
 function handleKeyboardInput(event) {
-    // Only process keyboard input if game is active and we're showing a question
-    if (gameActive && currentQuestion) {
+    // Only process keyboard input if game is active, we're showing a question, and not currently processing an answer
+    if (gameActive && currentQuestion && !answerProcessing) {
         // Check if the key pressed is 1, 2, 3, or 4
         if (event.key >= '1' && event.key <= '4') {
             // Convert key to answer index (0-3)
@@ -398,6 +399,12 @@ function updateSpeedIndicators() {
 
 
 function handleAnswer(answerIndex) {
+    // Prevent multiple answers
+    if (answerProcessing) return;
+    
+    // Set flag to indicate we're processing an answer
+    answerProcessing = true;
+    
     // Stop the timer
     clearInterval(timer);
     
@@ -503,12 +510,18 @@ function handleAnswer(answerIndex) {
             }
         }
         
+        // Reset the answer processing flag before loading next question
+        answerProcessing = false;
+        
         // Load next question
         loadQuestion();
     }, 2000); // 2 second delay
 }
 
 function handleTimeOut() {
+    // Set flag to indicate we're processing an answer
+    answerProcessing = true;
+    
     // Disable all answer buttons
     answerButtons.forEach(button => button.disabled = true);
     
@@ -564,6 +577,9 @@ function handleTimeOut() {
                 players[1].roundScores[currentRound-1] = 0;
             }
         }
+        
+        // Reset the answer processing flag before loading next question
+        answerProcessing = false;
         
         // Load next question
         loadQuestion();
